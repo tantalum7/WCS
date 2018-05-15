@@ -5,7 +5,7 @@ import os
 import time
 
 # Project imports
-from WindowsCryptStore import WindowsCryptStore
+from WCS import CryptStore
 
 
 class WcsTest(unittest.TestCase):
@@ -20,7 +20,7 @@ class WcsTest(unittest.TestCase):
                       "klist": ["ornages"]}
 
     def setUp(self):
-        self.wcs = WindowsCryptStore.new(self.TEST_FILE_PATH)
+        self.wcs = CryptStore.new(self.TEST_FILE_PATH)
 
     def tearDown(self):
         del self.wcs
@@ -61,7 +61,7 @@ class WcsTest(unittest.TestCase):
 
     def _rebind(self):
         del self.wcs
-        self.wcs = WindowsCryptStore(self.TEST_FILE_PATH)
+        self.wcs = CryptStore(self.TEST_FILE_PATH)
 
 if __name__ == '__main__':
     unittest.main()

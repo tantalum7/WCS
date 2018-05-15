@@ -1,6 +1,6 @@
 
 # Package meta
-__title__ = 'WindowsCryptStore'
+__title__ = 'WCS'
 __version__ = '0.1.0'
 __author__ = 'github.com/tantalum7'
 __license__ = 'WTFPL'
@@ -12,7 +12,7 @@ import pickle
 import time
 
 
-class WindowsCryptStore(object):
+class CryptStore(object):
 
     # Reserved key defines
     _CREATION_TIME = "__creationtime__"
@@ -24,8 +24,8 @@ class WindowsCryptStore(object):
         Simple class which stores a pickleable dict as a binary blob file, encrypted using Windows CryptProtectData().
         This allow it to be automatically decrypted by the Windows user that created the file (and admins).
 
-        To create a new crypt store file, use WindowsCryptStore.new(filepath)
-        To bind to an existing crypt store file, use WindowsCryptStore(filepath)
+        To create a new crypt store file, use WCS.new(filepath)
+        To bind to an existing crypt store file, use WCS(filepath)
         """
         # type: (str) -> None
         # Store file path in class
@@ -36,13 +36,13 @@ class WindowsCryptStore(object):
 
     @classmethod
     def new(cls, filepath):
-        """ Creates new crypt store file, then returns a WindowsCryptStore instance bound to it """
-        # type: (str) -> WindowsCryptStore
+        """ Creates new crypt store file, then returns a WCS instance bound to it """
+        # type: (str) -> CryptStore
         # Create a new file with creation time as the only entry
         cls._update_file(filepath, {cls._CREATION_TIME: time.time()})
 
-        # Create a WindowsCryptStore instance, and return it
-        return WindowsCryptStore(filepath)
+        # Create a WCS instance, and return it
+        return CryptStore(filepath)
 
     @property
     def update_time(self):
