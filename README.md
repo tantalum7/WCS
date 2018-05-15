@@ -2,7 +2,7 @@
 Encrypts a python dict, and stores as binary file. Decrypt is only available to the Windows User that created it (or Admin).
 
 ## Description
-WCS uses the Windows [Crypt.ProtectData()](https://msdn.microsoft.com/en-us/library/windows/desktop/aa380261(v=vs.85).aspx) API to encrypt a pickled python dictiontary, and store as a binary encrypted file. Only the Windows user that created the crypt store, or a local Admin, can decrypt the data. The WindowsCryptStore class provides dictionary like access to all the key: value pairs stored inside.
+WCS uses the Windows [Crypt.ProtectData()](https://msdn.microsoft.com/en-us/library/windows/desktop/aa380261(v=vs.85).aspx) API to encrypt a pickled python dictiontary, and store as a binary encrypted file. Only the Windows user that created the crypt store can decrypt the data. The WindowsCryptStore class provides dictionary like access to all the key: value pairs stored inside.
 
 ## Usage
 Creating a new crypt store file
@@ -18,7 +18,7 @@ wcs = CryptStore("secrets.bin")
 ```
 
 ## Security
-This class is designed to provide a way to keep data private on a Windows machine, only accessible by the User or the Admin, and without the need for an extra password. It is a balance between security and convenience - you should trust it as much as you trust the machine admins.
+This class is designed to provide a way to keep data private on a Windows machine, only accessible by the User and without the need for an extra password. It is a balance between security and convenience - you should trust it as much as you trust Windows.
 Also, this class is mostly a wrapper, so security concerns should be directed towards the Windows API itself.
 
 ## Limitations
