@@ -22,8 +22,8 @@ This class is designed to provide a way to keep data private on a Windows machin
 Also, this class is mostly a wrapper, so security concerns should be directed towards the Windows API itself.
 
 ## Limitations
-Crypt.ProtectData() is avaiable From Windows XP onwards
-Python 2.7 and 3.x supported.
+* Crypt.ProtectData() is available From Windows XP onwards
+* Python 2.7 and 3.x supported.
 
 ## TODO
 Maybe a *nix equivalent, to make it cross compatiable. Suggestions welcomed.
