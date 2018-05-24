@@ -31,8 +31,14 @@ class CryptStore(object):
         # Store file path in class
         self._filepath = filepath
 
-        # Perform initial file load, and store in class as plain data dict
-        self._plain_data = self._load_file(filepath)
+        # Perform initial file load and grab data dict
+        data = self._load_file(filepath)
+        
+        # Extract non-reserved keys, and store in plain data
+        self._plain_data = {k: v for k, v in self._plain_data.items() if not in self._RESERVED_KEYS}
+        
+        # Extract the reserved keys, and store in meta data
+        self._meta_data = {rkey: data[rkey] for rkey in self._RESERVED_KEYS if rkey in data.keys()}
 
     @classmethod
     def new(cls, filepath):
@@ -48,13 +54,13 @@ class CryptStore(object):
     def update_time(self):
         """ Returns a timestamp of the time of last edit """
         # type: () -> float
-        return self._plain_data[self._UPDATE_TIME]
+        return self._meta_data[self._UPDATE_TIME]
 
     @property
     def creation_time(self):
         """ Returns a timestamp of the time the file was created """
         # type: () -> float
-        return self._plain_data[self._CREATION_TIME]
+        return self._meta_data[self._CREATION_TIME]
 
     def __getitem__(self, key):
         """ Standard dict['item'] accessor """
@@ -72,7 +78,7 @@ class CryptStore(object):
         self._plain_data[key] = value
 
         # Update the crypt store file
-        self._update_file(self._filepath, self._plain_data)
+        self._update_file(self._filepath, self._plain_data, self._meta_data)
 
     def __delitem__(self, key):
         """ Standard del dict['item'] deleter"""
@@ -99,13 +105,13 @@ class CryptStore(object):
     def keys(self):
         """ Standard dict.keys() method """
         # type: () -> list(any)
-        return self._plain_data.keys()
+        return self._plain_data..keys()
 
     def values(self):
         """ Standard dict.values() method """
         # type: () -> list(any)
         return self._plain_data.values()
-
+    
     @classmethod
     def _load_file(cls, filepath):
         # type: (str) -> dict
@@ -115,8 +121,9 @@ class CryptStore(object):
             return pickle.loads(win32crypt.CryptUnprotectData(fp.read())[1])
 
     @classmethod
-    def _update_file(cls, filepath, plain_data):
+    def _update_file(cls, filepath, plain_data, meta_data):
         # type: (str, dict) -> None
         with open(filepath, "wb") as fp:
-            plain_data[cls._UPDATE_TIME] = time.time()
-            fp.write(win32crypt.CryptProtectData(pickle.dumps(plain_data)))
+            data = plain_data.copy().update(meta_data)
+            data[cls._UPDATE_TIME] = time.time()
+            fp.write(win32crypt.CryptProtectData(pickle.dumps(data)))
