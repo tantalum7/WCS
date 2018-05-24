@@ -35,7 +35,7 @@ class CryptStore(object):
         data = self._load_file(filepath)
         
         # Extract non-reserved keys, and store in plain data
-        self._plain_data = {k: v for k, v in self._plain_data.items() if not in self._RESERVED_KEYS}
+        self._plain_data = {k: v for k, v in self._plain_data.items() if k not in self._RESERVED_KEYS}
         
         # Extract the reserved keys, and store in meta data
         self._meta_data = {rkey: data[rkey] for rkey in self._RESERVED_KEYS if rkey in data.keys()}
